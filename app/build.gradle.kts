@@ -59,6 +59,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":feature-main"))
