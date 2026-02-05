@@ -21,4 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "TestTask"
 include(":app")
- 
+include(":domain")
+include(":data")
+include(":feature-main")
+include(":feature-favorites")
