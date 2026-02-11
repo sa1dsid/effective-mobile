@@ -23,6 +23,7 @@ rootProject.name = "TestTask"
 include(":app")
 include(":domain")
 include(":data")
-include(":feature-main")
+include(":feature-home")
 include(":feature-favorites")
 include(":feature-login")
+include(":feature-profile")

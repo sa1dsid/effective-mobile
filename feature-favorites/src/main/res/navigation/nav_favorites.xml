@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@+id/nav_favorites"
+    app:startDestination="@id/favoritesFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.testtask.feature_favorites.FavoritesFragment" />
+</navigation>

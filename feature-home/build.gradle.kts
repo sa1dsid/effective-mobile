@@ -1,12 +1,10 @@
-import org.gradle.kotlin.dsl.implementation
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.example.testtask.feature_favorites"
+    namespace = "com.example.testtask.feature_home"
     compileSdk {
         version = release(36)
     }
@@ -38,8 +36,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(project(":domain"))
     implementation(libs.androidx.appcompat)
+    implementation(project(":domain"))
     implementation(libs.material)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@+id/nav_login"
+    app:startDestination="@id/loginFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.testtaskfeature_login.LoginFragment" />
+</navigation>

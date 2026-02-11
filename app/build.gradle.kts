@@ -35,6 +35,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -62,6 +65,8 @@ dependencies {
     implementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":feature-main"))
+    implementation(project(":feature-home"))
     implementation(project(":feature-favorites"))
+    implementation(project(":feature-login"))
+    implementation(project(":feature-profile"))
 }

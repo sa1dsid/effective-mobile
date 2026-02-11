@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="home_graph" type="id" />
+    <item name="favorites_graph" type="id" />
+    <item name="profile_graph" type="id" />
+</resources>
