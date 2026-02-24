@@ -8,8 +8,6 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.testtask.feature_home.HomeFragment">
-        <deepLink
-            app:uri="myapp://home" />
     </fragment>
 
 </navigation>

@@ -12,6 +12,8 @@ import com.example.testtask.data.network.CoursesApi
 import com.example.testtask.data.repository.CoursesRepositoryImpl
 import com.example.testtask.databinding.ActivityMainBinding
 import com.example.testtask.domain.CoursesRepository
+import com.example.testtask.feature_home.HomeFragment
+import com.example.testtaskfeature_login.navigation.LoginNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,11 +22,14 @@ import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LoginNavigator {
 
     private lateinit var repository: CoursesRepository
     private lateinit var mockServer: MockWebServer
     private lateinit var binding: ActivityMainBinding
+    private val navigator by lazy {
+        LoginNavigatorImpl(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +37,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         setupBottomNavigation()
 
         loadCoursesWithMockServer()
 
     }
+
+    override fun openHome() {
+        navigator.openHome()
+    }
+
     private fun setupBottomNavigation() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment
@@ -80,15 +91,6 @@ class MainActivity : AppCompatActivity() {
                 mockServer.shutdown()
             }
         }
-    }
-    fun onLoginSuccess() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_main)
-        navGraph.setStartDestination(R.id.home_graph) // теперь старт — Home
-        navController.graph = navGraph
     }
 }
 
