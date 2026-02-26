@@ -2,6 +2,7 @@ package com.example.testtask
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +14,6 @@ import com.example.testtask.data.repository.CoursesRepositoryImpl
 import com.example.testtask.databinding.ActivityMainBinding
 import com.example.testtask.domain.CoursesRepository
 import com.example.testtask.feature_home.HomeFragment
-import com.example.testtaskfeature_login.navigation.LoginNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,14 +22,11 @@ import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity(), LoginNavigator {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var repository: CoursesRepository
     private lateinit var mockServer: MockWebServer
     private lateinit var binding: ActivityMainBinding
-    private val navigator by lazy {
-        LoginNavigatorImpl(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +41,6 @@ class MainActivity : AppCompatActivity(), LoginNavigator {
 
     }
 
-    override fun openHome() {
-        navigator.openHome()
-    }
-
     private fun setupBottomNavigation() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment
@@ -55,6 +48,13 @@ class MainActivity : AppCompatActivity(), LoginNavigator {
         val navController = navHostFragment.navController
 
         binding.bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                com.example.testtaskfeature_login.R.id.loginFragment -> binding.bottomNav.visibility = View.GONE
+                else -> binding.bottomNav.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun loadCoursesWithMockServer() {
