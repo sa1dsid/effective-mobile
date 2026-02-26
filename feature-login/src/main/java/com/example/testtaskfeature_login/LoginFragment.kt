@@ -1,6 +1,8 @@
 package com.example.testtaskfeature_login
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
@@ -29,6 +31,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.etEmail.filters = arrayOf(emailAllowedFilter)
 
+        binding.btnLogin.isEnabled = false
+
         val textWatcher = LoginValidationTextWatcher(binding.btnLogin, binding.etEmail, binding.etPassword)
 
         binding.etEmail.addTextChangedListener(textWatcher)
@@ -37,7 +41,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.btnLogin.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_nav_home)
         }
+        binding.btnVk.setOnClickListener {
+            openUrl("https://vk.com/")
+        }
+        binding.btnOk.setOnClickListener {
+            openUrl("https://ok.ru/")
+        }
 
+    }
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
