@@ -2,7 +2,6 @@ package com.example.testtaskfeature_login
 
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.task3.LoginValidationTextWatcher
 import com.example.testtaskfeature_login.databinding.FragmentLoginBinding
+import androidx.core.net.toUri
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -50,7 +50,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     }
     private fun openUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         startActivity(intent)
     }
 

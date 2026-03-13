@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -14,6 +15,8 @@ import com.example.testtask.data.repository.CoursesRepositoryImpl
 import com.example.testtask.databinding.ActivityMainBinding
 import com.example.testtask.domain.CoursesRepository
 import com.example.testtask.feature_home.HomeFragment
+import com.example.testtask.feature_home.HomeViewModel
+import com.example.testtask.feature_home.HomeViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomNavigation()
 
-        loadCoursesWithMockServer()
+        initRepository()
 
     }
 
@@ -56,41 +59,44 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun loadCoursesWithMockServer() {
+    private fun initRepository() {
         lifecycleScope.launch(Dispatchers.IO) {
+
             mockServer = MockWebServer()
             mockServer.start()
 
-            val json = MockWebServerHelper(this@MainActivity).loadJson("courses.json")
+            val json = MockWebServerHelper(this@MainActivity)
+                .loadJson("courses.json")
 
-            mockServer.enqueue(
-                MockResponse()
-                    .setResponseCode(200)
-                    .setBody(json)
-            )
+            repeat(100) {
+                mockServer.enqueue(
+                    MockResponse()
+                        .setResponseCode(200)
+                        .setBody(json)
+                )
+            }
 
             val retrofit = Retrofit.Builder()
-                .baseUrl(mockServer.url("/")) // <-- localhost
+                .baseUrl(mockServer.url("/"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
             val api = retrofit.create(CoursesApi::class.java)
+
             repository = CoursesRepositoryImpl(api)
 
-            try {
-                val courses = repository.getCourses()
-                withContext(Dispatchers.Main) {
-                    courses.forEach {
-                        Log.d("TestCourses", "${it.title} | Favorite: ${it.isFavorite}")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("TestCourses", "Ошибка при получении курсов", e)
-            } finally {
-                mockServer.shutdown()
+            withContext(Dispatchers.Main) {
+
+                val factory = HomeViewModelFactory(repository)
+
+                val viewModel = ViewModelProvider(
+                    this@MainActivity,
+                    factory
+                )[HomeViewModel::class.java]
+
             }
         }
     }
+
 }
 

@@ -5,7 +5,7 @@ data class Course(
     val title: String,
     val description: String,
     val price: String,
-    val rate: Double,
+    val rate: String,
     val startDate: String,
     val publishDate: String,
     val isFavorite: Boolean

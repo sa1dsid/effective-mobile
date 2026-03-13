@@ -66,13 +66,12 @@
                         android:textSize="12sp"/>
                 </LinearLayout>
 
-                <!-- Пространство БЕЗ фона -->
                 <View
                     android:layout_width="6dp"
                     android:layout_height="0dp"/>
 
-                <!-- Чип даты -->
                 <LinearLayout
+                    android:id="@+id/publishDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_chip"
@@ -80,9 +79,9 @@
                     android:paddingVertical="4dp">
 
                     <TextView
+                        android:id="@+id/tvDate"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:id="@+id/tvDate"
                         tools:text="22 мая 2024"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"/>
@@ -139,7 +138,7 @@
                     android:id="@+id/tvMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="@string/more_details"
+                    android:text="@string/more_details"
                     android:layout_weight="0"
                     android:textColor="#00C853"
                     android:textSize="14sp"/>
