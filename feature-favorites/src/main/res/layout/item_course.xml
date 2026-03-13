@@ -129,7 +129,7 @@
                     android:id="@+id/tvPrice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    tools:text="@string/price_course"
+                    tools:text="999 ₽"
                     android:layout_weight="1"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"/>

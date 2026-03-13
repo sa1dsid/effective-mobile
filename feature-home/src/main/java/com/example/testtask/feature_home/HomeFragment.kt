@@ -1,6 +1,5 @@
 package com.example.testtask.feature_home
 
-import CoursesAdapter
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testtask.feature_home.R
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -21,7 +19,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recyclerView = view.findViewById(R.id.rvCourses)
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
-        val adapter = CoursesAdapter()
+        val adapter = CoursesAdapter(
+            onFavoriteClick = { course ->
+                viewModel.toggleFavorite(course)
+            }
+        )
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

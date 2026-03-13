@@ -1,4 +1,4 @@
-package com.example.testtask.feature_home
+package com.example.testtask.feature_favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,16 +8,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class FavoriteViewModel(
     private val repository: CoursesRepository
 ) : ViewModel() {
 
-    private val _courses = MutableStateFlow<List<Course>>(emptyList())
-    val courses: StateFlow<List<Course>> = _courses
+    private val _favorites = MutableStateFlow<List<Course>>(emptyList())
+    val favorites: StateFlow<List<Course>> = _favorites
 
-    fun loadCourses() {
+    fun loadFavorites() {
+
         viewModelScope.launch {
-            _courses.value = repository.getCourses()
+
+            _favorites.value = repository.getFavoriteCourses()
         }
     }
     fun toggleFavorite(course: Course) {
@@ -26,7 +28,7 @@ class HomeViewModel(
 
             repository.toggleFavorite(course.id)
 
-            _courses.value = repository.getCourses()
+            _favorites.value = repository.getFavoriteCourses()
         }
     }
 }

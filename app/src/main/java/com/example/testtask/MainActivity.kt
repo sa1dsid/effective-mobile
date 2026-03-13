@@ -24,6 +24,8 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.example.testtask.feature_favorites.FavoriteViewModel
+import com.example.testtask.feature_favorites.FavoriteViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,12 +89,19 @@ class MainActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
 
-                val factory = HomeViewModelFactory(repository)
+                val homeFactory = HomeViewModelFactory(repository)
 
-                val viewModel = ViewModelProvider(
+                ViewModelProvider(
                     this@MainActivity,
-                    factory
+                    homeFactory
                 )[HomeViewModel::class.java]
+
+                val favoritesFactory = FavoriteViewModelFactory(repository)
+
+                ViewModelProvider(
+                    this@MainActivity,
+                    favoritesFactory
+                )[FavoriteViewModel::class.java]
 
             }
         }
