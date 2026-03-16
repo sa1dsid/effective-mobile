@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -59,10 +60,14 @@ dependencies {
 
     implementation(libs.koin.android)
 
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    implementation(libs.mockwebserver)
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":feature-home"))

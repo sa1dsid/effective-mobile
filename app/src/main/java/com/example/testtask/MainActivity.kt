@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
             val api = retrofit.create(CoursesApi::class.java)
 
-            repository = CoursesRepositoryImpl(api)
+            repository = CoursesRepositoryImpl(api, applicationContext)
 
             withContext(Dispatchers.Main) {
 
