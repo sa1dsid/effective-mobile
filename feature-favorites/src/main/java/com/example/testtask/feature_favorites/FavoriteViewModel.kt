@@ -3,13 +3,15 @@ package com.example.testtask.feature_favorites
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testtask.domain.Course
-import com.example.testtask.domain.CoursesRepository
+import com.example.testtask.domain.GetFavoriteCoursesUseCase
+import com.example.testtask.domain.ToggleFavoriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(
-    private val repository: CoursesRepository
+    private val getFavoriteCoursesUseCase: GetFavoriteCoursesUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
 
     private val _favorites = MutableStateFlow<List<Course>>(emptyList())
@@ -19,16 +21,16 @@ class FavoriteViewModel(
 
         viewModelScope.launch {
 
-            _favorites.value = repository.getFavoriteCourses()
+            _favorites.value = getFavoriteCoursesUseCase()
         }
     }
     fun toggleFavorite(course: Course) {
 
         viewModelScope.launch {
 
-            repository.toggleFavorite(course.id)
+            toggleFavoriteUseCase(course.id)
 
-            _favorites.value = repository.getFavoriteCourses()
+            _favorites.value = getFavoriteCoursesUseCase()
         }
     }
 }

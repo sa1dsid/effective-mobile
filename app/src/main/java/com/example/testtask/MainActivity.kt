@@ -1,7 +1,6 @@
 package com.example.testtask
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,11 +9,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.testtask.data.MockWebServerHelper
+import com.example.testtask.data.local.FavoritesLocalDataSource
 import com.example.testtask.data.network.CoursesApi
 import com.example.testtask.data.repository.CoursesRepositoryImpl
 import com.example.testtask.databinding.ActivityMainBinding
 import com.example.testtask.domain.CoursesRepository
-import com.example.testtask.feature_home.HomeFragment
+import com.example.testtask.domain.GetCoursesUseCase
+import com.example.testtask.domain.GetFavoriteCoursesUseCase
+import com.example.testtask.domain.ToggleFavoriteUseCase
 import com.example.testtask.feature_home.HomeViewModel
 import com.example.testtask.feature_home.HomeViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -85,18 +87,28 @@ class MainActivity : AppCompatActivity() {
 
             val api = retrofit.create(CoursesApi::class.java)
 
-            repository = CoursesRepositoryImpl(api, applicationContext)
+            val favoritesLocalDataSource = FavoritesLocalDataSource(applicationContext)
+            repository = CoursesRepositoryImpl(api, favoritesLocalDataSource)
 
             withContext(Dispatchers.Main) {
+                val getCoursesUseCase = GetCoursesUseCase(repository)
+                val getFavoriteCoursesUseCase = GetFavoriteCoursesUseCase(repository)
+                val toggleFavoriteUseCase = ToggleFavoriteUseCase(repository)
 
-                val homeFactory = HomeViewModelFactory(repository)
+                val homeFactory = HomeViewModelFactory(
+                    getCoursesUseCase,
+                    toggleFavoriteUseCase
+                )
 
                 ViewModelProvider(
                     this@MainActivity,
                     homeFactory
                 )[HomeViewModel::class.java]
 
-                val favoritesFactory = FavoriteViewModelFactory(repository)
+                val favoritesFactory = FavoriteViewModelFactory(
+                    getFavoriteCoursesUseCase,
+                    toggleFavoriteUseCase
+                )
 
                 ViewModelProvider(
                     this@MainActivity,
