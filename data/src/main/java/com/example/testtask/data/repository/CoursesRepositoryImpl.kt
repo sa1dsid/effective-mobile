@@ -2,7 +2,7 @@ package com.example.testtask.data.repository
 
 import com.example.testtask.data.local.FavoritesLocalDataSource
 import com.example.testtask.data.mappers.toDomain
-import com.example.testtask.data.network.CoursesApi
+import com.example.testtask.data.remote.CoursesApi
 import com.example.testtask.domain.Course
 import com.example.testtask.domain.CoursesRepository
 
