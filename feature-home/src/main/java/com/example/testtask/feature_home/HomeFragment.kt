@@ -23,9 +23,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewModel.toggleFavorite(course)
             }
         )
-
-        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
 
         lifecycleScope.launchWhenStarted {
             viewModel.courses.collect {

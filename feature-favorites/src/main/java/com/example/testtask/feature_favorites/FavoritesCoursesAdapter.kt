@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtask.domain.Course
 
@@ -44,9 +45,16 @@ class FavoritesCoursesAdapter(
     }
 
     fun submitList(list: List<Course>) {
+        val diffCallback = FavoritesCoursesDiffCallback(
+            oldList = items,
+            newList = list
+        )
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         items.clear()
         items.addAll(list)
-        notifyDataSetChanged()
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteCourseViewHolder {
@@ -60,5 +68,23 @@ class FavoritesCoursesAdapter(
 
     override fun onBindViewHolder(holder: FavoriteCourseViewHolder, position: Int) {
         holder.bind(items[position], onFavoriteClick)
+    }
+
+    private class FavoritesCoursesDiffCallback(
+        private val oldList: List<Course>,
+        private val newList: List<Course>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }

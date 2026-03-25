@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testtask.domain.Course
 
-class CoursesAdapter(private val onFavoriteClick: (Course) -> Unit)
-    : RecyclerView.Adapter<CoursesAdapter.CourseViewHolder>() {
+class CoursesAdapter(private val onFavoriteClick: (Course) -> Unit) :
+    RecyclerView.Adapter<CoursesAdapter.CourseViewHolder>() {
 
     class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -45,9 +46,16 @@ class CoursesAdapter(private val onFavoriteClick: (Course) -> Unit)
     private val items = mutableListOf<Course>()
 
     fun submitList(list: List<Course>) {
+        val diffCallback = CoursesDiffCallback(
+            oldList = items,
+            newList = list
+        )
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         items.clear()
         items.addAll(list)
-        notifyDataSetChanged()
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
@@ -61,5 +69,23 @@ class CoursesAdapter(private val onFavoriteClick: (Course) -> Unit)
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
         holder.bind(items[position], onFavoriteClick)
+    }
+
+    private class CoursesDiffCallback(
+        private val oldList: List<Course>,
+        private val newList: List<Course>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }
